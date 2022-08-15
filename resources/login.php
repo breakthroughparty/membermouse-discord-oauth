@@ -10,6 +10,8 @@ $settings = get_option('discord_oauth_plugin_options');
 $loginurl = $settings['login_url'];
 $memberurl = $settings['member_url'];
 $successurl = $settings['success_url'];
+$state = $_GET['state'];
+$statecheck = check_state($state);
 
 $MemberID = mm_member_data(array("name"=>"id"));
 if (!$MemberID) {
@@ -29,6 +31,7 @@ elseif (!$_GET['code']) {
 # Initializing all the required values for the script to work
 init($redirect_url, $client_id, $secret_id, $bot_token);
 
+if ($statecheck = true) {
 # Fetching user details | (identify scope) (optionally email scope too if you want user's email) [Add identify AND email scope for the email!]
 get_user();
 
@@ -74,3 +77,9 @@ $m=discord_notify($msgobj);
 session_destroy();
 # Redirecting to success page
 header('Location: ' .$successurl);
+}
+else {
+    session_destroy();
+    header('Location: ' .$memberurl);
+    die();
+}
