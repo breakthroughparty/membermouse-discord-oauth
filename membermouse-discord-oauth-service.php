@@ -133,6 +133,10 @@ function SetUpdatedPronouns($data) {
 	global $guildid;
 	$discordid = $data["cf_10"];
 	$pronouns = $data["cf_2"];
+	$otherpronouns = $data["cf_6"];
+	if ($pronouns == "Other Pronouns") {
+		$pronouns = $otherpronouns;
+	}
 	$discordlinked = $data["cf_9"];
 	if ($discordlinked == "mm_cb_on") {
 	update_pronouns($guildid, $discordid, $pronouns);
