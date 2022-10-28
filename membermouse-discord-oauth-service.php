@@ -90,8 +90,8 @@ function RemoveMemberFromDiscord($data) {
 	$discorduserid = $data["cf_10"];
 	$discordname = $data["cf_7"];
 	$memberid = $data["member_id"];
-	//if status is cancelled(2) or expired(8)
-	if ($memberstatus == 2 || $memberstatus == 8) {
+	//if status is cancelled(2) or expired(8) or pending cancellation (9)
+	if ($memberstatus == 2 || $memberstatus == 8 || $memberstatus == 9) {
 		$msgobj = [
 			"content" => "Member {$memberid}'s membership has gone to {$statustext} status.",
 		];
