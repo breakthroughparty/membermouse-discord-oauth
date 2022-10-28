@@ -6,7 +6,7 @@
  * Plugin Name:       MemberMouse Discord OAuth Service
  * Description:       Provides "Login with Discord" via a shortcode, then uses the user's oauth token to get their discord username, populate the field on the member profile and add them to the server after validating their membership.
  * Plugin URI:        https://github.com/BreakthroughParty/membermouse-discord-oauth-service
- * Version:           0.45
+ * Version:           0.5
  * Author:            Breakthrough Tech Team
  * Author URI:        https://breakthroughparty.org.uk/
  */
@@ -128,5 +128,16 @@ function RemoveMemberFromDiscord($data) {
 		
 	}
 }
+
+function SetUpdatedPronouns($data) {
+	global $guildid;
+	$discordid = $data["cf_10"];
+	$pronouns = $data["cf_2"];
+	$discordlinked = $data["cf_9"];
+	if ($discordlinked == "mm_cb_on") {
+	update_pronouns($guildid, $discordid, $pronouns);
+	}
+}
 add_action('mm_member_status_change', 'RemoveMemberFromDiscord');
+add_action('mm_member_account_update', 'SetUpdatedPronouns');
 ?>

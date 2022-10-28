@@ -18,7 +18,7 @@ $scopes = "identify+guilds.join";
 # example: https://mydomain.com/includes/login.php
 # example: https://mydomain.com/test/includes/login.php
 $wpurl = get_site_url();
-$redirect_url = "{$wpurl}/wp-content/plugins/mm-discord-oauth/resources/login.php";
+$redirect_url = "{$wpurl}/wp-content/plugins/membermouse-discord-oauth-service/resources/login.php";
 
 $bot_token = $settings['bot_token'];
 ?>

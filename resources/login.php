@@ -64,6 +64,11 @@ join_guild($guildid);
 $roleid = $settings['role_id'];
 grant_role($guildid, $roleid);
 
+#update pronouns
+$pronouns = mm_member_data(array("name"=>"customField_2"));
+if (isset($pronouns)) {
+    update_pronouns($guildid, $discordID, $pronouns);
+}
 #notify admin channel
 $msgobj = [
     "content" => "Member ID {$MemberID} joined Discord via oAuth with Discord User <@{$discordID}>",

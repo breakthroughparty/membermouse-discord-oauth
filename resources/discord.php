@@ -176,6 +176,71 @@ function kick_user($guildid, $userid)
     return $results;
 }
 
+#function to get the current nick by user id
+function get_nick($guildid, $userid)
+{
+    $url = $GLOBALS['base_url'] . "/api/guilds/$guildid/members/" . $userid;
+    $headers = array('Content-Type: application/json', 'Authorization: Bot ' . $GLOBALS['bot_token']);
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "GET");
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    $response = curl_exec($curl);
+    curl_close($curl);
+    $results = json_decode($response, true);
+    $nick = $results['nick'];
+    if (is_null($nick)) {
+    $username = $results['user']['username'];
+    return $username;    
+    }
+    else {
+    return $nick;
+    }
+}
+
+#function to prepend pronouns to the member's server nick
+function update_pronouns($guildid, $userid, $pronouns)
+{
+    $currentnick = get_nick($guildid, $userid);
+    //if nick already has a prefix set
+        if (substr($currentnick, 0, 1) === "[") {
+        //strip existing prefix
+        $strippednick = preg_replace('/([[]\w*[\/]\w*[]][ ])|([[]\w*[]][ ])/', '', $currentnick);
+        //remove pronouns if none set
+        if ($pronouns == "- not set -"){
+            $newnick = $strippednick;
+        }
+        else {
+        //prepend pronouns
+       $newnick = "[{$pronouns}] {$strippednick}";
+        }
+    }
+    //if no prefix
+    else {
+        //do nothing if no pronouns set
+        if ($pronouns == "- not set -"){
+            return;
+        }
+        else {
+        //prepend pronouns
+        $newnick = "[{$pronouns}] {$currentnick}";
+        }
+    }
+    $data = json_encode(array("nick" => "{$newnick}"));
+    $url = $GLOBALS['base_url'] . "/api/guilds/$guildid/members/" . $userid;
+    $headers = array('Content-Type: application/json', 'Authorization: Bot ' . $GLOBALS['bot_token']);
+    $curl = curl_init();
+    curl_setopt($curl, CURLOPT_URL, $url);
+    curl_setopt($curl, CURLOPT_RETURNTRANSFER, true);
+    curl_setopt($curl, CURLOPT_CUSTOMREQUEST, "PATCH");
+    curl_setopt($curl, CURLOPT_HTTPHEADER, $headers);
+    curl_setopt($curl, CURLOPT_POSTFIELDS, $data);
+    $response = curl_exec($curl);
+    curl_close($curl);
+    $results = json_decode($response, true);
+    return $results;
+}
 
 # A function to verify if login is legit
 function check_state($state)
