@@ -36,7 +36,7 @@
 		"<p class=\"mb-0\">You can now log into Discord with your username <a href='https://discord.com/app' class=\"hover more\"><strong>{$discorduser}</strong></a></p>"
 		);
 	}
-    return wp_kses_post("<a href='{$auth_url}' class='nobg'><img src='/wp-content/plugins/mm-discord-oauth/resources/discord_button.png'></img></a>");
+    return wp_kses_post("<a href='{$auth_url}' class='nobg'><img src='/wp-content/plugins/membermouse-discord-oauth-service/resources/discord_button.png'></img></a>");
 }
 );
 $bot_token = $settings["bot_token"];
